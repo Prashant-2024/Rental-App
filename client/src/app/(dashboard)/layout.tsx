@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (authUser) {
-      const userRole = authUser.userRole?.toLoweCase();
+      const userRole = authUser.userRole?.toLowerCase();
       if (
         (userRole === "manager" && pathname.startsWith("/tenants")) ||
         (userRole === "tenant" && pathname.startsWith("/managers"))
