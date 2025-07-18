@@ -15,3 +15,5 @@ router.put(
   upload.array("photos"),
   createProperty
 );
+
+export default router
