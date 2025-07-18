@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import { authMiddleware } from "./middleware/authMiddleware";
 import tenantRoutes from "./routes/tenantsRoutes";
 import managerRoutes from "./routes/managerRoutes";
+import propertyRoutes from "./routes/propertyRoutes";
 
 // Configs
 dotenv.config();
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
   res.send("Server is running at home Route");
 });
 
+app.use("/properties", propertyRoutes);
 app.use("/tenants", authMiddleware(["tenant"]), tenantRoutes);
 app.use("/managers", authMiddleware(["manager"]), managerRoutes);
 
