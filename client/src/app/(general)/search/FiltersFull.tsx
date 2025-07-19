@@ -13,7 +13,7 @@ import { AmenityIcons, PropertyTypeIcons } from "@/lib/constants";
 import { cleanParams, cn, formatEnumString } from "@/lib/utils";
 import { FiltersState, initialState, setFilters } from "@/state";
 import { useAppSelector } from "@/state/redux";
-import { debounce, keyBy } from "lodash";
+import { debounce } from "lodash";
 import { Search } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
