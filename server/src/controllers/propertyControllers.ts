@@ -103,7 +103,7 @@ export const getProperties = async (
 
     const completeQuery = Prisma.sql`
     SELECT p.*,
-    json_build_object('id':l.id, 'address',l.address, 'city',l.city, 'state', l.state, 'country',l.country, 'postalCode', l."postalCode", 'coordinates', json_build_object('longitude', ST_X(l."coordinates"::geometry), 'latitude', ST_Y(l."coordinates"::geometry))) as location
+    json_build_object('id',l.id, 'address',l.address, 'city',l.city, 'state', l.state, 'country',l.country, 'postalCode', l."postalCode", 'coordinates', json_build_object('longitude', ST_X(l."coordinates"::geometry), 'latitude', ST_Y(l."coordinates"::geometry))) as location
     FROM "Property" p
     JOIN "Location" l on p."locationId" = l.id
     ${
