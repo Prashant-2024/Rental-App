@@ -14,7 +14,7 @@ export const getProperties = async (
 ): Promise<void> => {
   try {
     const {
-      favoritesIds,
+      favoriteIds,
       priceMin,
       priceMax,
       beds,
@@ -30,10 +30,10 @@ export const getProperties = async (
 
     let whereConditions: Prisma.Sql[] = [];
 
-    if (favoritesIds) {
-      const favoritesIdsArray = (favoritesIds as string).split(" ").map(Number);
+    if (favoriteIds) {
+      const favoriteIdsArray = (favoriteIds as string).split(" ").map(Number);
       whereConditions.push(
-        Prisma.sql`p.id IN (${Prisma.join(favoritesIdsArray)})`
+        Prisma.sql`p.id IN (${Prisma.join(favoriteIdsArray)})`
       );
     }
 
