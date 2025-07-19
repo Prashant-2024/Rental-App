@@ -19,7 +19,6 @@ interface InitialStateTypes {
 }
 
 export const initialState: InitialStateTypes = {
-  isFiltersFullOpen: false,
   filters: {
     location: "Los Angeles",
     beds: "any",
@@ -31,6 +30,7 @@ export const initialState: InitialStateTypes = {
     squareFeet: [null, null],
     coordinates: [-118.25, 34.05],
   },
+  isFiltersFullOpen: false,
   viewMode: "grid",
 };
 
