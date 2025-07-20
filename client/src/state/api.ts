@@ -1,5 +1,12 @@
 import { cleanParams, createNewUserInDatabase } from "@/lib/utils";
-import { Lease, Manager, Payment, Property, Tenant } from "@/types/prismaTypes";
+import {
+  Application,
+  Lease,
+  Manager,
+  Payment,
+  Property,
+  Tenant,
+} from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 import { FiltersState } from ".";
@@ -24,6 +31,7 @@ export const api = createApi({
     "PropertyDetails",
     "Leases",
     "Payments",
+    "Applications",
   ],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
@@ -213,6 +221,36 @@ export const api = createApi({
         { type: "Managers", id: result?.manager?.id },
       ],
     }),
+
+    getApplications: build.query<
+      Application[],
+      { userId?: string; userType?: string }
+    >({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params.userId) {
+          queryParams.append("userId", params.userId.toString());
+        }
+        if (params.userType) {
+          queryParams.append("userType", params.userType);
+        }
+
+        return `applications?${queryParams.toString()}`;
+      },
+      providesTags: ["Applications"],
+    }),
+
+    updateApplicationStatus: build.mutation<
+      Application & { lease?: Lease },
+      { id: number; status: string }
+    >({
+      query: ({ id, status }) => ({
+        url: `applications/${id}/status`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: ["Applications", "Leases"],
+    }),
   }),
 });
 
@@ -231,4 +269,6 @@ export const {
   useGetPaymentsQuery,
   useGetManagerPropertiesQuery,
   useCreatePropertyMutation,
+  useGetApplicationsQuery,
+  useUpdateApplicationStatusMutation
 } = api;
