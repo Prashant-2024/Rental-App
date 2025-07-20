@@ -26,9 +26,10 @@ const Applications = () => {
       userId: authUser?.cognitoInfo?.userId,
       userType: "manager",
     },
-    { skip: !authUser?.cognitoInfo?.userId }
+    {
+      skip: !authUser?.cognitoInfo?.userId,
+    }
   );
-
   const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
 
   const handleStatusChange = async (id: number, status: string) => {
@@ -74,6 +75,7 @@ const Applications = () => {
                   userType="manager"
                 >
                   <div className="flex justify-between gap-5 w-full pb-4 px-4">
+                    {/* Colored Section Status */}
                     <div
                       className={`p-4 text-green-700 grow ${
                         application.status === "Approved"
