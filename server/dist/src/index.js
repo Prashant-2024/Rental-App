@@ -9,6 +9,9 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const authMiddleware_1 = require("./middleware/authMiddleware");
+const tenantsRoutes_1 = __importDefault(require("./routes/tenantsRoutes"));
+const managerRoutes_1 = __importDefault(require("./routes/managerRoutes"));
 // Configs
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -23,6 +26,8 @@ app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
     res.send("Server is running at home Route");
 });
+app.use("/tenants", (0, authMiddleware_1.authMiddleware)(["tenant"]), tenantsRoutes_1.default);
+app.use("/managers", (0, authMiddleware_1.authMiddleware)(["manager"]), managerRoutes_1.default);
 // Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

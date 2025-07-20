@@ -5,6 +5,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import { authMiddleware } from "./middleware/authMiddleware";
+import tenantRoutes from "./routes/tenantsRoutes";
+import managerRoutes from "./routes/managerRoutes";
 
 // Configs
 dotenv.config();
@@ -21,6 +24,9 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Server is running at home Route");
 });
+
+app.use("/tenants", authMiddleware(["tenant"]), tenantRoutes);
+app.use("/managers", authMiddleware(["manager"]), managerRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
