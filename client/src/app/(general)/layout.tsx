@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { useGetAuthUserQuery } from "@/state/api";
