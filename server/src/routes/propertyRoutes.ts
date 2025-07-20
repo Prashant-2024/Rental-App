@@ -9,9 +9,9 @@ const router = express.Router();
 
 router.get("/", getProperties);
 router.get("/:id", getProperty);
-router.put(
+router.post(
   "/",
-  authMiddleware(["managers"]),
+  authMiddleware(["manager"]),
   upload.array("photos"),
   createProperty
 );
