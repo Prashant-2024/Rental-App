@@ -1,3 +1,5 @@
+"use client";
+
 import SettingsForm from "@/components/SettingsForm";
 import {
   useGetAuthUserQuery,
