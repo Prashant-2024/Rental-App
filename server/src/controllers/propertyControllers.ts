@@ -6,7 +6,13 @@ import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
 
 const prisma = new PrismaClient();
-const s3Client = new S3Client({ region: process.env.AWS_REGION });
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 export const getProperties = async (
   req: Request,
@@ -31,7 +37,7 @@ export const getProperties = async (
     let whereConditions: Prisma.Sql[] = [];
 
     if (favoriteIds) {
-      const favoriteIdsArray = (favoriteIds as string).split(" ").map(Number);
+      const favoriteIdsArray = (favoriteIds as string).split(",").map(Number);
       whereConditions.push(
         Prisma.sql`p.id IN (${Prisma.join(favoriteIdsArray)})`
       );
@@ -52,18 +58,18 @@ export const getProperties = async (
     }
 
     if (baths && baths !== "any") {
-      whereConditions.push(Prisma.sql`p.baths>=${Number(beds)}`);
+      whereConditions.push(Prisma.sql`p.baths>=${Number(baths)}`);
     }
 
     if (squareFeetMin) {
       whereConditions.push(
-        Prisma.sql`p."squareFeetMax" >=${Number(squareFeetMin)}`
+        Prisma.sql`p."squareFeet" >=${Number(squareFeetMin)}`
       );
     }
 
     if (squareFeetMax) {
       whereConditions.push(
-        Prisma.sql`p."squareFeetMax" <= ${Number(squareFeetMax)}`
+        Prisma.sql`p."squareFeet" <= ${Number(squareFeetMax)}`
       );
     }
 
@@ -74,7 +80,7 @@ export const getProperties = async (
     }
 
     if (amenities && amenities !== "any") {
-      const amenitiesArray = (amenities as string).split(" ");
+      const amenitiesArray = (amenities as string).split(",");
       whereConditions.push(Prisma.sql`p.amenities @> ${amenitiesArray}`);
     }
 
@@ -187,7 +193,7 @@ export const createProperty = async (
           params: uploadParams,
         }).done();
 
-        return uploadResults;
+        return uploadResults.Location;
       })
     );
 
@@ -196,7 +202,7 @@ export const createProperty = async (
         street: address,
         city,
         country,
-        postalCode: postalCode,
+        postalcode: postalCode,
         format: "json",
         limit: "1",
       }
